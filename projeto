@@ -1,5 +1,5 @@
 Ambiente:
-	nome, descrição, rua.
+	nome, descrição, rua, adm.
 
 Usuario:
 	username, email, nome
