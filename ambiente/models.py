@@ -8,7 +8,7 @@ class Ambiente(models.Model):
 	endereco = models.CharField(max_length=150, verbose_name='Endereço', null=True, blank=False)
 	criador = models.ForeignKey(User, verbose_name='Criador', null=False, blank=False, related_name='+')
 	data_criacao = models.DateTimeField(default=timezone.now)
-	participantes = models.ManyToManyField(User, verbose_name='Participantes', blank=True)
+	participantes = models.ManyToManyField(User, verbose_name='Participantes', blank=True, related_name='+')
 
 	def __str__(self):
 		return self.nome

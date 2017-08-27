@@ -4,35 +4,29 @@
 
 {% block conteudo %}
 <div class="container">
-	<div class="row justify-content-sm-center">
-		<div class="col-lg-6">
-			<div class="card">
-			  <div class="card-body">
-			   Faça login no formulário abaixo.
-			   <hr>
-			    <form id="sign">
-					  <div class="form-group">
-					    <label for="exampleInputEmail1">Username:</label>
-					    <input type="text" class="form-control" id="aunome" placeholder="Insira seu username">
-					    <div class="invalid-feedback">
-				        Insira um nome de usuário válido.
-				      </div>
-					  </div>
-					  <div class="form-group">
-					    <label for="exampleInputPassword1">Senha:</label>
-					    <input type="password" class="form-control" id="ausenha" placeholder="Insira sua senha">
-					    <div class="invalid-feedback">
-				        Insira uma senha válida.
-				      </div>
-					  </div>
-					  <button type="submit" id="btnlogin" class="btn btn-primary btn-block">Entrar</button>
-					</form>
-					<br>
-					Não tem cadastro? Faça <a href="#" data-toggle="modal" data-target="#modalRegistro">aqui</a>!
-			  </div>
-			</div>
-		</div>		
-	</div>
+	<div class="col-lg-6 col-lg-offset-3">
+		<div class="panel panel-default">
+		  <div class="panel-body">
+		    Faça login no formulário abaixo.
+		   <hr>
+		    <form id="sign">
+				  <div class="form-group">
+				    <label for="exampleInputEmail1">Username:</label>
+				    <input type="text" class="form-control" id="aunome" placeholder="Insira seu username">
+				    <span class="help-block desaparece">Insira um nome de usuário válido.</span>
+				  </div>
+				  <div class="form-group">
+				    <label for="exampleInputPassword1">Senha:</label>
+				    <input type="password" class="form-control" id="ausenha" placeholder="Insira sua senha">
+				    <span class="help-block desaparece">Insira uma senha válida.</span>
+				  </div>
+				  <button type="submit" id="btnlogin" class="btn btn-primary btn-block">Entrar</button>
+				</form>
+				<br>
+				Não tem cadastro? Faça <a href="#" data-toggle="modal" data-target="#modalRegistro">aqui</a>!
+		  </div>
+		</div>
+  </div>
 </div>
 
 <div class="modal fade" id="modalRegistro" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">

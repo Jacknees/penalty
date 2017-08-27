@@ -22,7 +22,9 @@ $('#sign').submit(function() {
                     if (json == true) {
                         parent.window.document.location.href = '/';
                     } else {
-                        $('#aunome, #ausenha').addClass("is-invalid");
+                        console.log("não logou");
+                        $('.help-block').removeClass("desaparece");
+                        $('.help-block').addClass("aparece");
                         $('#btnlogin').removeClass("disabled");
                         $('#btnlogin').text("Entrar");                        
                     }            
@@ -93,6 +95,57 @@ $('#register').submit(function() {
     });
     return false;
 });
+
+function add_user(idUser, idHouse) {
+    $.ajax({
+        url : "/ambiente/add_user/",
+        type : "POST",
+        data : { 
+            house : idHouse,
+            email : idUser
+             },
+        success : function(json) {
+            if (json != false) {
+                console.log("Resultado do processamento: "+json);
+                parent.window.document.location.href = '';
+            } else {
+                console.log("Resultado do processamento: "+json);
+                alert("Impossível adicionar usuário!");
+            }            
+        },
+
+        error : function(xhr,errmsg,err) {
+            console.log(xhr.status + ": " + xhr.responseText);
+           alert("Erro ao adicionar usuário!");
+           //$('.loadadd').addClass("semfunc");
+
+        }
+    }); 
+    return false;
+}
+
+function remove_user(idUser, idHouse) {
+    $.ajax({
+        url : "/ambiente/remove_user/",
+        type : "POST",
+        data : { 
+            house : idHouse,
+            iduser : idUser
+             },
+        success : function(json) {
+            if (json != false) {
+                parent.window.document.location.href = '';
+            } else {
+                alert("Erro ao excluir participante.");
+            }            
+        },
+
+        error : function(xhr,errmsg,err) {
+            console.log(xhr.status + ": " + xhr.responseText);
+        }
+    }); 
+    return false;
+}
 
 
 function getCookie(name) {

@@ -4,26 +4,24 @@
 
 {% block conteudo %}
 <div class="container">
-	<div class="row justify-content-sm-center">
-		<div class="col-lg-10">
-			<div class="card">
-			  <div class="card-body">
-			   <h4>Crie um ambiente</h4>
-			   <hr>
-			    <form action="{% url 'ambiente:novo' %}" method="post">
-			      {% csrf_token %}
-			      {% for field in form %}
-			      	<div class="form-group">
-			      	{{ field.errors }}
-        			{{ field.label_tag }} {{ field }}
-        			</div>
-			      {% endfor %}
-				  <button type="submit" class="btn btn-primary btn-block">Criar</button>
-				</form>
-			  </div>
-			</div>
-		</div>		
-	</div>
+	<div class="col-lg-10 col-lg-offset-1">
+		<div class="card">
+		  <div class="card-body">
+		   <h4>Crie um ambiente</h4>
+		   <hr>
+		    <form action="{% url 'ambiente:novo' %}" method="post">
+		      {% csrf_token %}
+		      {% for field in form %}
+		      	<div class="form-group">
+		      	{{ field.errors }}
+    			{{ field.label_tag }} {{ field }}
+    			</div>
+		      {% endfor %}
+			  <button type="submit" class="btn btn-primary btn-block">Criar</button>
+			</form>
+		  </div>
+		</div>
+	</div>		
 </div>
 	
 {% endblock conteudo %}

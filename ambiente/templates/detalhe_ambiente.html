@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+
+{% block titulo %}Penalty - {{ ambiente.nome }} {% endblock titulo %}
+
+{% block conteudo %}
+<div class="container-fluid">
+	<div class="row">
+		<div class="col-sm-3">
+		    <nav class="nav-sidebar">
+		        <ul class="nav">
+		            <li class="active"><a href="javascript:;">Geral</a></li>
+		            <li class="nav-divider"></li>
+		            <li><a href="javascript:;">Próximos eventos</a></li>
+		            <li><a href="javascript:;">Eventos passados</a></li>
+		            <li><a href="javascript:;">Multas</a></li>
+		            <li class="nav-divider"></li>
+		            <li><a href="javascript:;">Gerenciar eventos</a></li>
+		            <li><a href="javascript:;">Gerenciar participantes</a></li>
+		            <li class="nav-divider"></li>
+		            <li><a href="javascript:;">Estatísticas</a></li>
+		            <li><a href="javascript:;">Sobre o ambiente</a></li>
+		        </ul>
+		    </nav>
+		</div>
+	
+	<div class="col-sm-9">
+	<h3>{{ ambiente.nome }}</h3>
+	<hr>
+	</div>
+	<div class="col-sm-5">
+		<div class="panel panel-default">
+		  <div class="panel-body">
+		  	<p>Hoje é dia de...</p>
+		  </div>
+		</div>
+		<div class="panel panel-default">
+		  <div class="panel-body">
+		  	<p>Multas em aberto</p>
+		  </div>
+		</div>
+	</div>
+	<div class="col-sm-4">
+		<div class="panel panel-default">
+		  <div class="panel-body">
+		  	<p>Próximos eventos</p>
+		  </div>
+		</div>
+	</div>	
+	</div>
+</div>
+{% endblock conteudo %}
