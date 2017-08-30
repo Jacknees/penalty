@@ -38,15 +38,42 @@ class Evento(models.Model):
 		return self.nome
 
 	def multipublish(self):
+		try:
+			self.id_agrupador = Evento.objects.last().id_agrupador + 1
+		except AttributeError as e:
+			self.id_agrupador = 1
+
 		if self.intervalo == 'D':
 			delta = self.data_fim - self.data_inicio
-			print(delta)
 			for i in range(0, delta.days, self.quantidade_intervalos_repeticao):
 				evento = copy(self)
 				data = self.data_inicio.toordinal() + i
 				evento.dia_evento = date.fromordinal(data)
 				evento.save()
-				#super(Evento, evento).save()
+
+		elif self.intervalo == 'S':
+			delta = self.data_fim - self.data_inicio
+			for i in range(0, delta.days, 7 * self.quantidade_intervalos_repeticao):
+				evento = copy(self)
+				data = self.data_inicio.toordinal() + i
+				evento.dia_evento = date.fromordinal(data)
+				evento.save()
+
+		# elif self.intervalo == 'M':
+		# 	delta = self.data_fim - self.data_inicio
+		# 	cont = 0
+		# 	year = 0
+		# 	for i in range(0, delta.months, self.quantidade_intervalos_repeticao):
+		# 		if cont > 12:
+		# 			cont = 0
+		# 			year += 1
+		# 		evento = copy(self)
+		# 		data = self.data_inicio.replace(month=self.data_inicio.month + cont)	
+		# 		evento.dia_evento = data
+		# 		evento.save()
+
+
+
 
 
 # data do fim, data do evento, dia do evento, se repete em..., valor da multa, valido por..., 
