@@ -2,6 +2,7 @@ from django.db import models
 from django.utils import timezone
 from datetime import date
 from core.models import User
+from copy import copy
 
 class Ambiente(models.Model):
 	nome = models.CharField(max_length=100, verbose_name='Nome', null=False, blank=False)
@@ -29,12 +30,24 @@ class Evento(models.Model):
 	id_agrupador = models.IntegerField()
 	valor_multa = models.FloatField(verbose_name='Valor da multa', blank=False, default=2.0)
 	quantidade_intervalos_repeticao = models.IntegerField(verbose_name='Se repete em')
-	intervalo = models.CharField(max_length=1, choices=INTERVALOS)
+	intervalo = models.CharField(max_length=40, choices=INTERVALOS, null=False, blank=False)
 	solicitacao_de_validacao = models.BooleanField(default=False)
-	momento_da_solicitacao = models.DateTimeField(blank=True)
+	momento_da_solicitacao = models.DateTimeField(blank=True, null=True)
 
 	def __str__(self):
 		return self.nome
+
+	def multipublish(self):
+		if self.intervalo == 'D':
+			delta = self.data_fim - self.data_inicio
+			print(delta)
+			for i in range(0, delta.days, self.quantidade_intervalos_repeticao):
+				evento = copy(self)
+				data = self.data_inicio.toordinal() + i
+				evento.dia_evento = date.fromordinal(data)
+				evento.save()
+				#super(Evento, evento).save()
+
 
 # data do fim, data do evento, dia do evento, se repete em..., valor da multa, valido por..., 
 # momento da validacao, solicitacao de validacao.

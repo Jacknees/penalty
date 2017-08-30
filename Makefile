@@ -11,3 +11,5 @@ user:
 
 shell:
 	python manage.py shell
+jupyter:
+	python manage.py shell_plus --notebook
