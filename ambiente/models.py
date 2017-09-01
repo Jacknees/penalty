@@ -78,3 +78,4 @@ class Evento(models.Model):
 
 # data do fim, data do evento, dia do evento, se repete em..., valor da multa, valido por..., 
 # momento da validacao, solicitacao de validacao.
+# perto de meia noite
