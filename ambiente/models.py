@@ -1,5 +1,6 @@
 from django.db import models
 from django.utils import timezone
+from dateutil.relativedelta import relativedelta
 from datetime import date
 from core.models import User
 from copy import copy
@@ -59,18 +60,14 @@ class Evento(models.Model):
 				evento.dia_evento = date.fromordinal(data)
 				evento.save()
 
-		# elif self.intervalo == 'M':
-		# 	delta = self.data_fim - self.data_inicio
-		# 	cont = 0
-		# 	year = 0
-		# 	for i in range(0, delta.months, self.quantidade_intervalos_repeticao):
-		# 		if cont > 12:
-		# 			cont = 0
-		# 			year += 1
-		# 		evento = copy(self)
-		# 		data = self.data_inicio.replace(month=self.data_inicio.month + cont)	
-		# 		evento.dia_evento = data
-		# 		evento.save()
+		elif self.intervalo == 'M':
+			delta = self.data_fim - self.data_inicio
+			meses = int(delta.days/30)
+			for i in range(0, meses, self.quantidade_intervalos_repeticao):
+				evento = copy(self)
+				data = self.data_inicio + relativedelta(months=i)
+				evento.dia_evento = data
+				evento.save()
 
 
 
