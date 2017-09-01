@@ -4,6 +4,7 @@ from dateutil.relativedelta import relativedelta
 from datetime import date
 from core.models import User
 from copy import copy
+from django.db.models import Count
 
 class Ambiente(models.Model):
 	nome = models.CharField(max_length=100, verbose_name='Nome', null=False, blank=False)
@@ -16,6 +17,9 @@ class Ambiente(models.Model):
 	def __str__(self):
 		return self.nome
 
+	def listar_eventos_agregados(self):
+		return Evento.objects.filter(ambiente=self.pk).values('nome', 'criador', 'responsavel', 'descricao', 'data_inicio', 'data_fim', 'quantidade_intervalos_repeticao', 'valor_multa', 'intervalo').annotate(dcount=Count('id_agrupador'))
+
 class Evento(models.Model):
 	INTERVALOS = (
         ('D', 'Dias'),
@@ -24,7 +28,9 @@ class Evento(models.Model):
     )
 	nome = models.CharField(max_length=100, verbose_name='Nome', null=False, blank=False)
 	descricao = models.CharField(max_length=100, verbose_name='Descrição', null=True, blank=False)
-	criador = models.ForeignKey(User, verbose_name='Criador', null=False, blank=False, related_name='+')
+	criador = models.ForeignKey(User, verbose_name='Criador', null=False, blank=False, related_name='+', default=1)
+	responsavel = models.ForeignKey(User, verbose_name='Responsavel pela tarefa', null=False, blank=False, related_name='+', default=1)
+	ambiente = models.ForeignKey(Ambiente, verbose_name='Ambiente', null=False, blank=False, related_name='+')
 	data_inicio = models.DateField(default=date.today)
 	data_fim = models.DateField(verbose_name='Data de término')
 	dia_evento = models.DateField()

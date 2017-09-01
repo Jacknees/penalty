@@ -65,4 +65,4 @@ def eventos(request, pk):
 	ambiente = get_object_or_404(Ambiente, pk=pk)
 	get_object_or_404(ambiente.participantes, pk=request.user.pk)
 	# participantes = ambiente.participantes.get_queryset()
-	return render(request, 'eventos.html', {'ambiente':ambiente})
+	return render(request, 'eventos_ambiente.html', {'ambiente':ambiente, 'eventos':ambiente.listar_eventos_agregados()})

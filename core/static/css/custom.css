@@ -50,3 +50,36 @@
     -moz-border-radius: 0 4px 4px 0; 
     border-radius: 0 4px 4px 0; 
 }
+
+.dias{
+    background-color: #AFEEEE;
+}
+
+.semanas{
+    background-color: #FFE7BA;
+}
+
+.meses{
+    background-color: #F0FFFF;
+}
+
+/*cor das tags no post do ikndex*/
+.pCinza{
+    color: #BEBEBE;
+}
+
+/*cor do nome do usuário no post do index*/
+.pCinzaUser{
+    color: #9C9C9C;
+}
+
+/*cor do link do firstname dos posts do index*/
+
+.titulopindex{
+    color: #000000;
+}
+
+
+.titulopindex:hover{
+    color: #000000;
+}

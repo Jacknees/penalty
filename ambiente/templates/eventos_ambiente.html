@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-
+{% load aux_tags %}
 {% block titulo %}Penalty - {{ ambiente.nome }} - Eventos{% endblock titulo %}
 
 {% block conteudo %}
@@ -14,8 +14,8 @@
 		            <li><a href="javascript:;">Eventos passados</a></li>
 		            <li><a href="javascript:;">Multas</a></li>
 		            <li class="nav-divider"></li>
-		            <li><a href="javascript:;">Gerenciar eventos</a></li>
-		            <li class="active"><a href="javascript:;">Gerenciar participantes</a></li>
+		            <li class="active"><a href="javascript:;">Gerenciar eventos</a></li>
+		            <li><a href="javascript:;">Gerenciar participantes</a></li>
 		            <li class="nav-divider"></li>
 		            <li><a href="javascript:;">Estatísticas</a></li>
 		            <li><a href="javascript:;">Sobre o ambiente</a></li>
@@ -30,49 +30,34 @@
 		  <div class="panel-body">
 		  <p>Aqui estão os eventos deste ambiente</p>
 		  <hr>
-		  {% for participante in  participantes%}
-		  	<a href="#" data-toggle="modal" data-target="#modaldetalhe{{ participante.pk }}">{{ participante.first_name }}</a><span> - {{ participante.email }} {% if participante == ambiente.criador %} (Administrador do ambiente){% endif %} {% if request.user == ambiente.criador and request.user != participante %} - <a href="#" data-toggle="modal" data-target="#modal{{ participante.pk }}">Retirar participante</a>{% endif %}</span><br>
-			<div class="modal fade" id="modal{{ participante.pk }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
-			  <div class="modal-dialog" role="document">
-			    <div class="modal-content">
-			      <div class="modal-header">
-			        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-			        <h4 class="modal-title" id="exampleModalLabel">Confirmar exclusão de participação de {{ participante.first_name }}</h4>
-			      </div>
-			      <div class="modal-body">
-			      	<p>Ao confirmar esta ação, além de retirar {{ participante.first_name }} deste ambiente, você excuirá todos os eventos relativos ao participante. Deseja continuar?</p>
-			      </div>
-			      <div class="modal-footer">
-			        <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
-			        <button type="button" onclick="remove_user({{ participante.id }}, {{ ambiente.pk }});" class="btn btn-danger" onclick="excluiConta()">Excluir {{ participante.first_name }} do ambiente</button>
-			      </div>
-			    </div>
+		  <div class="row">
+		  	
+		  
+		  {% for evento in eventos %}
+		  <div class="col-sm-6">
+		  	<div class="panel panel-default">
+		  	  {% if evento.intervalo == "D" %}
+		  	  	<div class="panel-body dias">
+		  	  {% elif evento.intervalo == "S" %}
+		  	  	<div class="panel-body semanas">
+		  	  {% else %}
+		  	    <div class="panel-body meses">
+		  	  {% endif %}
+			    <h4><a href="" class="titulopindex">{{ evento.nome }}</a><span class="pCinza"> - Concedido a {{ evento.responsavel|firstnameaux }}</span></h4>
+			    <small class="pCinzaUser">
+			    	{{ evento.descricao }}<br>
+			    	De {{ evento.data_inicio }} a {{ evento.data_fim }}<br>
+			    	Se repete de {{ evento.quantidade_intervalos_repeticao }} em {{ evento.quantidade_intervalos_repeticao }} {{ evento.intervalo|typedata }}<br>
+			    	Valor multa: R$ {{ evento.valor_multa }}<br>
+			    </small>
 			  </div>
 			</div>
-			<div class="modal fade" id="modaldetalhe{{ participante.pk }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
-			  <div class="modal-dialog" role="document">
-			    <div class="modal-content">
-			      <div class="modal-header">
-			        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-			        <h4 class="modal-title" id="exampleModalLabel">Detalhes de {{ participante.first_name }}</h4>
-			      </div>
-			      <div class="modal-body">
-			      	<ul>
-			      		<li>Nome: {{ participante.first_name }}</li>
-			      		<li>Email: {{ participante.email }}</li>
-			      		<li>Última vez que efetuou login: {{ participante.last_login }}</li>
-			      		<li>Data de cadastro: {{ participante.date_joined }}</li>
-			      	</ul>
-			      </div>
-			      <div class="modal-footer">
-			        <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
-			      </div>
-			    </div>
-			  </div>
-			</div>
+		  </div>
+
 		  {% endfor %}
+		  </div>
 		  <hr>
-		  <p>Para adicionar um participante ao ambiente clique <a data-toggle="modal" data-target="#exampleModal" href="#">aqui</a>.</p>
+		  <p>Para adicionar um evento ao ambiente clique <a data-toggle="modal" data-target="#exampleModal" href="#">aqui</a>.</p>
 		  <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
 		  <div class="modal-dialog" role="document">
 		    <div class="modal-content">
