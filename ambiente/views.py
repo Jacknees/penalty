@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404, HttpResponse
-from .forms import AmbienteForm
+from .forms import AmbienteForm, EventoForm
 from .models import Ambiente, User
 
 import json
@@ -66,3 +66,18 @@ def eventos(request, pk):
 	get_object_or_404(ambiente.participantes, pk=request.user.pk)
 	# participantes = ambiente.participantes.get_queryset()
 	return render(request, 'eventos_ambiente.html', {'ambiente':ambiente, 'eventos':ambiente.listar_eventos_agregados()})
+
+def new_evento(request, pk):
+	ambiente = get_object_or_404(Ambiente, pk=pk)
+	get_object_or_404(ambiente.participantes, pk=request.user.pk)
+	if request.method == 'POST':
+		form = EventoForm(ambiente.participantes, request.POST)
+		if form.is_valid():
+			evento = form.save(commit=False)
+			evento.criador = request.user
+			evento.ambiente = ambiente
+			evento.multipublish()
+			return redirect("/ambiente/{}/eventos".format(pk))
+	else:
+		form = EventoForm(ambiente.participantes)
+	return render(request, 'novo_evento.html', {'form':form, 'ambiente':ambiente})

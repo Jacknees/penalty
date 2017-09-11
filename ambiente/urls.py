@@ -11,5 +11,6 @@ urlpatterns = [
     url(r'^add_user/$', views.add_user, name='add_user'),
     url(r'^remove_user/$', views.remove_user, name='remove_user'),
 
-     url(r'^(?P<pk>[0-9]+)/eventos/$', views.eventos, name='eventos'),
+    url(r'^(?P<pk>[0-9]+)/eventos/$', views.eventos, name='eventos'),
+    url(r'^(?P<pk>[0-9]+)/eventos/novo/$', views.new_evento, name='novoevento'),
 ]

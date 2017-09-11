@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block titulo %}Penalty - {{ ambiente.nome }} -  Novo Evento{% endblock titulo %}
+
+{% block conteudo %}
+<div class="container">
+	<div class="col-lg-10 col-lg-offset-1">
+		<div class="card">
+		  <div class="card-body">
+		  <div class="row">
+		   <h4>Crie um evento em {{ ambiente.nome }}</h4>
+		   <hr>
+		    <form action="{% url 'ambiente:novoevento' ambiente.pk %}" method="post">
+		      {% csrf_token %}
+		      {% for field in form %}
+		      	<div class="form-group">
+		      	{{ field.errors }}
+    			{{ field.label_tag }} {{ field }}
+    			</div>
+		      {% endfor %}
+			  <button type="submit" class="btn btn-primary btn-block">Criar</button>
+			</form>
+			</div>
+		  </div>
+		</div>
+	</div>		
+</div>
+	
+{% endblock conteudo %}
