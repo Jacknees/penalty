@@ -24,6 +24,11 @@
 		</div>
 	
 	<div class="col-sm-9">
+		<ol class="breadcrumb">
+		  <li><a href="#">Home</a></li>
+		  <li><a href="{% url 'ambiente:ambiente' ambiente.pk %}">{{ ambiente.nome }}</a></li>
+		  <li class="active">Participantes</li>
+		</ol>
 		<h3>{{ ambiente.nome }} - Gerenciar participantes:</h3>
 		<hr>
 		<div class="panel panel-default">

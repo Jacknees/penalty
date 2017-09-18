@@ -18,7 +18,7 @@ class Ambiente(models.Model):
 		return self.nome
 
 	def listar_eventos_agregados(self):
-		return Evento.objects.filter(ambiente=self.pk).values('nome', 'criador', 'responsavel', 'descricao', 'data_inicio', 'data_fim', 'quantidade_intervalos_repeticao', 'valor_multa', 'intervalo').annotate(dcount=Count('id_agrupador'))
+		return Evento.objects.filter(ambiente=self.pk).values('nome', 'criador', 'responsavel', 'descricao', 'data_inicio', 'data_fim', 'quantidade_intervalos_repeticao', 'valor_multa', 'intervalo', 'id_agrupador').annotate(dcount=Count('id_agrupador'))
 
 class Evento(models.Model):
 	INTERVALOS = (

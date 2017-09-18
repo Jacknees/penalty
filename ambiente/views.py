@@ -1,6 +1,6 @@
-from django.shortcuts import render, redirect, get_object_or_404, HttpResponse
-from .forms import AmbienteForm, EventoForm
-from .models import Ambiente, User
+from django.shortcuts import render, redirect, get_object_or_404, HttpResponse, get_list_or_404
+from .forms import AmbienteForm, EventoForm, EditEventoForm
+from .models import Ambiente, User, Evento
 
 import json
 
@@ -45,6 +45,24 @@ def remove_user(request):
 			return HttpResponse(json.dumps(False), content_type="application/json")
 	raise Http404
 
+def deletar_evento(request):
+	if request.method == 'POST' and request.is_ajax():
+		try:
+			if request.POST.get('house') != "" and request.POST.get('idevent') != "":
+				ambient = request.POST.get('house')
+				event = request.POST.get('idevent')
+				house = get_object_or_404(Ambiente, pk=ambient)
+				get_object_or_404(house.participantes, pk=request.user.pk)
+				if get_list_or_404(Evento, id_agrupador=event)[0].ambiente != house: raise Http404
+				Evento.objects.filter(id_agrupador=event).delete()
+				#house.participantes.remove(user)
+				return HttpResponse(json.dumps(True), content_type="application/json")
+			return HttpResponse(json.dumps(False), content_type="application/json")
+		except Exception as e:
+			print(e)
+			return HttpResponse(json.dumps(False), content_type="application/json")
+	raise Http404
+
 def add_user(request):
 	if request.method == 'POST' and request.is_ajax():
 		try:
@@ -77,7 +95,31 @@ def new_evento(request, pk):
 			evento.criador = request.user
 			evento.ambiente = ambiente
 			evento.multipublish()
-			return redirect("/ambiente/{}/eventos".format(pk))
+			return redirect("/ambiente/{}/eventos/{}".format(pk, evento.id_agrupador))
 	else:
 		form = EventoForm(ambiente.participantes)
 	return render(request, 'novo_evento.html', {'form':form, 'ambiente':ambiente})
+
+def evento(request, pk, pkevento):
+	ambiente = get_object_or_404(Ambiente, pk=pk)
+	get_object_or_404(ambiente.participantes, pk=request.user.pk)
+	evento = get_list_or_404(Evento, id_agrupador=pkevento)
+	# participantes = ambiente.participantes.get_queryset()
+	return render(request, 'evento.html', {'ambiente':ambiente, 'evento':evento[0]})
+
+def editar_evento(request, pk, pkevento):
+	ambiente = get_object_or_404(Ambiente, pk=pk)
+	get_object_or_404(ambiente.participantes, pk=request.user.pk)
+	inst_evento = get_list_or_404(Evento, id_agrupador=pkevento)[0]
+	if inst_evento.ambiente != ambiente: raise Http404
+	if request.method == 'POST':
+		form = EditEventoForm(ambiente.participantes, request.POST, instance=inst_evento)
+		if form.is_valid():
+			evento = form.save(commit=False)
+			# evento.criador = request.user
+			# evento.ambiente = ambiente
+			Evento.objects.filter(id_agrupador=inst_evento.id_agrupador).update(nome=evento.nome, descricao=evento.descricao, valor_multa=evento.valor_multa, responsavel=evento.responsavel)
+			return redirect("/ambiente/{}/eventos/{}".format(pk, evento.id_agrupador))
+	else:
+		form = EditEventoForm(ambiente.participantes, instance=inst_evento)
+	return render(request, 'editar_evento.html', {'form':form, 'ambiente':ambiente, 'evento':inst_evento})

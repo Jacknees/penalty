@@ -147,6 +147,29 @@ function remove_user(idUser, idHouse) {
     return false;
 }
 
+function delete_event(idHouse, idEvent) {
+    $.ajax({
+        url : "/ambiente/delete_event/",
+        type : "POST",
+        data : { 
+            house : idHouse,
+            idevent : idEvent
+             },
+        success : function(json) {
+            if (json != false) {
+                parent.window.document.location.href = '/ambiente/'+idHouse+'/eventos/';
+            } else {
+                alert("Erro ao excluir evento.");
+            }            
+        },
+
+        error : function(xhr,errmsg,err) {
+            console.log(xhr.status + ": " + xhr.responseText);
+        }
+    }); 
+    return false;
+}
+
 
 function getCookie(name) {
         var cookieValue = null;

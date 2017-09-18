@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'django_extensions',
     'core',
     'ambiente',
+    'bootstrap3_datetime'
 ]
 
 MIDDLEWARE = [
