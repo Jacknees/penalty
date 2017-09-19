@@ -11,6 +11,8 @@ https://docs.djangoproject.com/en/1.11/ref/settings/
 """
 
 import os
+import tempfile
+import django
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -40,7 +42,9 @@ INSTALLED_APPS = [
     'django_extensions',
     'core',
     'ambiente',
-    'bootstrap3_datetime'
+    'bootstrap3_datetime',
+    'ckeditor',
+    'ckeditor_uploader',
 ]
 
 MIDDLEWARE = [
@@ -117,8 +121,183 @@ USE_L10N = True
 
 USE_TZ = True
 
+CKEDITOR_CONFIGS = {
+    'principal': {
+        'skin': 'moono',
+        'tabSpaces': '4',
+
+        'toolbar_Basic': [
+            ['Source', '-', 'Bold', 'Italic']
+        ],
+        'toolbar_YourCustomToolbarConfig': [
+            {'name': 'document', 'items': ['Save', 'NewPage', '-', 'Templates']},
+            {'name': 'editing', 'items': ['Find', 'Replace', '-', 'SelectAll']},
+            {'name': 'insert',
+             'items': ['Table', 'HorizontalRule', 'Smiley', 'SpecialChar', 'PageBreak', '-', 'CodeSnippet']},
+            {'name': 'yourcustomtools', 'items': [
+                # put the name of your editor.ui.addButton here
+                'Preview',
+            ]},
+            {'name': 'basicstyles',
+             'items': ['Bold', 'Italic', 'Underline', 'Strike', 'Subscript', 'Superscript', '-', 'RemoveFormat']},
+            
+            '/',
+            
+             {'name': 'links', 'items': ['Link', 'Unlink', 'Anchor', 'Image']},
+            {'name': 'paragraph',
+             'items': ['NumberedList', 'BulletedList', '-', 'Outdent', 'Indent', '-', 'Blockquote', 'CreateDiv', '-',
+                       'JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock', '-', 'BidiLtr', 'BidiRtl']},
+            
+        ],
+
+        'toolbar': 'YourCustomToolbarConfig',  # put selected toolbar config here
+        'toolbarGroups': [{ 'name': 'document', 'groups': [ 'mode', 'document', 'doctools' ] }],
+        'height': 200,
+        'width': '100%',
+        # 'filebrowserWindowHeight': 725,
+        # 'filebrowserWindowWidth': 940,
+        # 'toolbarCanCollapse': True,
+        # 'mathJaxLib': '//cdn.mathjax.org/mathjax/2.2-latest/MathJax.js?config=TeX-AMS_HTML',
+        'tabSpaces': 4,
+        'extraPlugins': ','.join(
+            [
+                # your extra plugins here
+                'div',
+                'autolink',
+                'autoembed',
+                'embedsemantic',
+                'autogrow',
+                # 'devtools',
+                'widget',
+                'lineutils',
+                'clipboard',
+                'dialog',
+                'dialogui',
+                'elementspath',
+                'codesnippet',
+                'uploadimage',
+            ]),
+    },
+
+    'post': {
+        'skin': 'moono',
+        'tabSpaces': '4',
+
+        'toolbar_Basic': [
+            ['Source', '-', 'Bold', 'Italic']
+        ],
+        'toolbar_YourCustomToolbarConfig': [
+            {'name': 'document', 'items': ['Save', 'NewPage', '-', 'Templates']},
+            {'name': 'editing', 'items': ['Find', 'Replace', '-', 'SelectAll']},
+            {'name': 'insert',
+             'items': ['Table', 'HorizontalRule', 'Smiley', 'SpecialChar', 'PageBreak', '-', 'CodeSnippet']},
+            {'name': 'yourcustomtools', 'items': [
+                # put the name of your editor.ui.addButton here
+                'Preview',
+            ]},
+            {'name': 'paragraph',
+             'items': ['NumberedList', 'BulletedList', '-', 'Outdent', 'Indent', '-', 'Blockquote', 'CreateDiv', '-',
+                       'JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock', '-', 'BidiLtr', 'BidiRtl']},
+            
+            '/',
+            {'name': 'basicstyles',
+             'items': ['Bold', 'Italic', 'Underline', 'Strike', 'Subscript', 'Superscript', '-', 'RemoveFormat']},
+             {'name': 'links', 'items': ['Link', 'Unlink', 'Anchor', 'Image']},
+            
+            
+        ],
+
+        'toolbar': 'YourCustomToolbarConfig',  # put selected toolbar config here
+        'toolbarGroups': [{ 'name': 'document', 'groups': [ 'mode', 'document', 'doctools' ] }],
+        'height': 260,
+        'width': '100%',
+        # 'filebrowserWindowHeight': 725,
+        # 'filebrowserWindowWidth': 940,
+        # 'toolbarCanCollapse': True,
+        #'mathJaxLib': '//cdn.mathjax.org/mathjax/2.2-latest/MathJax.js?config=TeX-AMS_HTML',
+        'tabSpaces': 4,
+        'extraPlugins': ','.join(
+            [
+                # your extra plugins here
+                'div',
+                'autolink',
+                'autoembed',
+                'embedsemantic',
+                'autogrow',
+                # 'devtools',
+                'widget',
+                'lineutils',
+                'clipboard',
+                'dialog',
+                'dialogui',
+                'elementspath',
+                'codesnippet',
+                'uploadimage',
+                'smiley',
+            ]),
+    },
+
+        'texto': {
+            'skin': 'moono',
+            'tabSpaces': '4',
+
+            'toolbar_Basic': [
+                ['Source', '-', 'Bold', 'Italic']
+            ],
+            'toolbar_YourCustomToolbarConfig': [
+
+                {'name': 'basicstyles',
+                 'items': ['Bold', 'Italic', 'Underline', 'Strike', 'Subscript', 'Superscript', '-', 'RemoveFormat']},
+                {'name': 'insert',
+                 'items': ['Smiley', 'SpecialChar', 'PageBreak', '-', 'CodeSnippet']},
+                {'name': 'links', 'items': ['Link', 'Unlink', 'Anchor']},
+                {'name':'imagem', 'items': ['Image','-','-','-','-','-','-']}
+            ],
+
+            'toolbar': 'YourCustomToolbarConfig',  # put selected toolbar config here
+            # 'toolbarGroups': [{ 'name': 'document', 'groups': [ 'mode', 'document', 'doctools' ] }],
+            'height': '100%',
+            'width': '180%',
+            # 'filebrowserWindowHeight': 725,
+            # 'filebrowserWindowWidth': 940,
+            # 'toolbarCanCollapse': True,
+            # 'mathJaxLib': '//cdn.mathjax.org/mathjax/2.2-latest/MathJax.js?config=TeX-AMS_HTML',
+            'tabSpaces': 4,
+            'extraPlugins': ','.join(
+                [
+                    # your extra plugins here
+                    'div',
+                    'autolink',
+                    'autoembed',
+                    'embedsemantic',
+                    'autogrow',
+                    # 'devtools',
+                    'widget',
+                    'lineutils',
+                    'clipboard',
+                    'dialog',
+                    'dialogui',
+                    'elementspath',
+                    'codesnippet',
+                    
+                ]),
+        }
+
+}
+
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
 
 STATIC_URL = '/static/'
+MEDIA_URL = '/media/'
+STATIC_ROOT = os.path.join(tempfile.gettempdir(), 'ck_static')
+MEDIA_ROOT = 'media/'
+
+
+#Configurações do CKEditor
+CKEDITOR_ALLOW_NONIMAGE_FILES = False
+CKEDITOR_RESTRICT_BY_USER = True
+CKEDITOR_UPLOAD_PATH = "uploads/"
+CKEDITOR_IMAGE_BACKEND = "pillow"
+CKEDITOR_JQUERY_URL = '//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js'

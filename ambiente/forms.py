@@ -1,5 +1,5 @@
 from django import forms
-from .models import Ambiente, Evento
+from .models import Ambiente, Evento, ComentariosDeEventos
 from django.contrib.admin.widgets import AdminDateWidget
 from datetime import date
 from bootstrap3_datetime.widgets import DateTimePicker
@@ -48,12 +48,7 @@ class EditEventoForm(forms.ModelForm):
 	nome = forms.CharField(widget=forms.TextInput(attrs={'class':'form-control', 'placeholder':'Informe o nome do evento'}),)
 	descricao = forms.CharField(widget=forms.TextInput(attrs={'class':'form-control', 'placeholder':'Considerações sobre o evento'}),)
 	valor_multa = forms.FloatField(required=True, min_value=0, widget=forms.NumberInput(attrs={'class':'form-control', 'placeholder':'Valor da multa em R$', 'id': 'form_homework', 'step': '0.1'}))
-	#quantidade_intervalos_repeticao = forms.IntegerField(min_value=1, required=True, widget=forms.NumberInput(attrs={'class':'form-control', 'placeholder':'Determine um intervalo'}),)
-	#data_inicio = forms.DateField(widget=DateTimePicker(options={"format": "DD/MM/YYYY", "pickTime": False}), initial=date.today)
-	#data_fim = forms.DateField(widget=DateTimePicker(options={"format": "DD/MM/YYYY", "pickTime": False}), initial=date.fromordinal(date.today().toordinal() + 30), error_messages = {'invalid': 'A data final deve ser maior que a inicial'})
-	#dia_evento = forms.DateField(widget=DateTimePicker(options={"format": "DD/MM/YYYY", "pickTime": False}), initial=date.today)
 	responsavel = forms.ModelChoiceField(widget=forms.Select(attrs={'class':'form-control'}), queryset=choice)
-	#intervalo = forms.CharField(widget=forms.Select(attrs={'class':'form-control'}, choices=Evento.INTERVALOS))
 
 	class Meta:
 		model = Evento
@@ -63,3 +58,9 @@ class EditEventoForm(forms.ModelForm):
 		super(EditEventoForm, self).__init__(*args, **kwargs)
 		self.fields['responsavel'].queryset = participantes
 		choice = participantes
+
+class Comentarios(forms.ModelForm):
+
+	class Meta:
+		model = ComentariosDeEventos
+		fields = ('texto',)

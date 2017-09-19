@@ -16,4 +16,6 @@ urlpatterns = [
     url(r'^(?P<pk>[0-9]+)/eventos/novo/$', views.new_evento, name='novoevento'),
     url(r'^(?P<pk>[0-9]+)/eventos/editar/(?P<pkevento>[0-9]+)$', views.editar_evento, name='editar_evento'),
     url(r'^(?P<pk>[0-9]+)/eventos/(?P<pkevento>[0-9]+)/$', views.evento, name='evento'),
+
+    url(r'^(?P<pk>[0-9]+)/tarefa/(?P<pktarefa>[0-9]+)/$', views.tarefa, name='tarefa'),
 ]

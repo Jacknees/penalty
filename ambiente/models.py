@@ -5,6 +5,8 @@ from datetime import date
 from core.models import User
 from copy import copy
 from django.db.models import Count
+from ckeditor.fields import RichTextField
+from ckeditor_uploader.fields import RichTextUploadingField
 
 class Ambiente(models.Model):
 	nome = models.CharField(max_length=100, verbose_name='Nome', null=False, blank=False)
@@ -76,7 +78,14 @@ class Evento(models.Model):
 				evento.save()
 
 
+class ComentariosDeEventos(models.Model):
+	usuario = models.ForeignKey(User, default=1)
+	evento = models.ForeignKey(Evento)
+	texto = RichTextUploadingField(config_name='texto')
+	data = models.DateTimeField(default=timezone.now)
 
+	def __str__(self):
+		return '~' + self.coment + '~ em ~' + self.fixie.titulo + '~'
 
 
 # data do fim, data do evento, dia do evento, se repete em..., valor da multa, valido por..., 

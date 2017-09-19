@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404, HttpResponse, get_list_or_404
-from .forms import AmbienteForm, EventoForm, EditEventoForm
-from .models import Ambiente, User, Evento
+from .forms import AmbienteForm, EventoForm, EditEventoForm, Comentarios
+from .models import Ambiente, User, Evento, ComentariosDeEventos
+import PIL
 
 import json
 
@@ -123,3 +124,19 @@ def editar_evento(request, pk, pkevento):
 	else:
 		form = EditEventoForm(ambiente.participantes, instance=inst_evento)
 	return render(request, 'editar_evento.html', {'form':form, 'ambiente':ambiente, 'evento':inst_evento})
+
+def tarefa(request, pk, pktarefa):
+	ambiente = get_object_or_404(Ambiente, pk=pk)
+	get_object_or_404(ambiente.participantes, pk=request.user.pk)
+	eventobj = get_object_or_404(Evento, pk=pktarefa)
+	comentarios = ComentariosDeEventos.objects.filter(evento=eventobj)
+	form = Comentarios(request.POST or None)
+	if request.method == 'POST':
+		if form.is_valid():
+			com = form.save(commit=False)
+			texto = form.cleaned_data['texto']
+			com.usuario = request.user
+			com.evento = eventobj
+			com.save()
+			return redirect('/ambiente/'+pk+'/tarefa/'+pktarefa+'/#post')
+	return render(request, 'tarefa.html', {'ambiente':ambiente, 'tarefa':eventobj, 'coments':comentarios, 'form':form})
