@@ -23,9 +23,11 @@ mistune==0.7.4
 nbconvert==5.2.1
 nbformat==4.4.0
 notebook==5.0.0
+olefile==0.44
 pandocfilters==1.4.2
 pexpect==4.2.1
 pickleshare==0.7.4
+Pillow==4.2.1
 prompt-toolkit==1.0.15
 ptyprocess==0.5.2
 Pygments==2.2.0
