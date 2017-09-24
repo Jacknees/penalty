@@ -71,6 +71,23 @@
 		  	</ul>
 		  	<br><br>
 		  	<h4>Histórico:</h4>
+		  	<hr>
+		  	{% for evt in historico %}
+		  		<a href="{% url 'ambiente:tarefa' ambiente.pk evt.pk %}">{{ evt.dia_evento }} - {{ evt.nome }} (atribuida para {{ evt.responsavel.first_name }})</a><br>
+		  	{% empty %}
+		  		<p>Ainda não houve nenhuma tarefa para este tipo de evento.</p>
+		  	{% endfor %}
+		  	<nav aria-label="Page navigation">
+			  <ul class="pager">
+			    {% if historico.has_previous %}
+			    	<li class="previous"><a href="?page={{ historico.previous_page_number }}"><span aria-hidden="true">&larr;</span> Página anterior</a></li>
+		        {% endif %}
+			    Página {{ historico.number }} de {{ historico.paginator.num_pages }}.
+			    {% if historico.has_next %}
+			    	<li class="next"><a href="?page={{ historico.next_page_number }}">Próxima página <span aria-hidden="true">&rarr;</span></a></li>
+		        {% endif %}
+			  </ul>
+			</nav>
 		  </div>
 
 		   </div>

@@ -8,3 +8,8 @@ Ambiente/usuario
 
 Evento:
 	data de inicio, data do fim, data do evento, dia do evento, se repete em..., valor da multa, valido por..., momento da validacao, solicitacao de validacao.
+
+Regras para as tarefas:
+	Se a tarefa estiver no dia de ser feita, o usuário responsável poderar solicitar que cumpriu com o afazer;
+	Os outros participantes terão dois dias para a aplicação da multa pós-solicitação. Se não for assinalada a multa, a tarefa será considerada como concluída.
+	Caso a tarefa tenha expirado o prazo, impreterivelmente, o responsável receberá multa pela mesma. 

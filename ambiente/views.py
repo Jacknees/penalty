@@ -1,7 +1,9 @@
 from django.shortcuts import render, redirect, get_object_or_404, HttpResponse, get_list_or_404
+from datetime import date
 from .forms import AmbienteForm, EventoForm, EditEventoForm, Comentarios
 from .models import Ambiente, User, Evento, ComentariosDeEventos
 import PIL
+from django.core.paginator import Paginator, InvalidPage, EmptyPage
 
 import json
 
@@ -105,8 +107,23 @@ def evento(request, pk, pkevento):
 	ambiente = get_object_or_404(Ambiente, pk=pk)
 	get_object_or_404(ambiente.participantes, pk=request.user.pk)
 	evento = get_list_or_404(Evento, id_agrupador=pkevento)
-	# participantes = ambiente.participantes.get_queryset()
-	return render(request, 'evento.html', {'ambiente':ambiente, 'evento':evento[0]})
+	historico = Evento.objects.filter(id_agrupador=pkevento).filter(dia_evento__lt=date.today())
+	paginator = Paginator(historico[::-1], 15) # Mostra 15 contatos por página
+
+    # Make sure page request is an int. If not, deliver first page.
+    # Esteja certo de que o `page request` é um inteiro. Se não, mostre a primeira página.
+	try:
+		page = int(request.GET.get('page', '1'))
+	except ValueError:
+		page = 1
+
+	# Se o page request (9999) está fora da lista, mostre a última página.
+	try:
+		lista = paginator.page(page)
+	except (EmptyPage, InvalidPage):
+		lista = paginator.page(paginator.num_pages)
+
+	return render(request, 'evento.html', {'ambiente':ambiente, 'evento':evento[0], 'historico':lista})
 
 def editar_evento(request, pk, pkevento):
 	ambiente = get_object_or_404(Ambiente, pk=pk)

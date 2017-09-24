@@ -77,6 +77,19 @@ class Evento(models.Model):
 				evento.dia_evento = data
 				evento.save()
 
+	def action_rules(self, user_logged):
+		if self.dia_evento > date.today():
+			return False # Se a data do evento for futura não mostre botões
+		elif self.solicitacao_de_validacao:
+			#if self.momento_da_solicitacao
+			return 1 # Se houver solicitação de validação, 
+		else:
+			if self.dia_evento == date.today():
+				return 2 # Poderá solicitar cumprimento da tarefa
+			elif self.dia_evento < date.today():
+				return 3 # Multa está correndo
+
+		#...
 
 class ComentariosDeEventos(models.Model):
 	usuario = models.ForeignKey(User, default=1)
