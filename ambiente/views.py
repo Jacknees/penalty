@@ -156,4 +156,4 @@ def tarefa(request, pk, pktarefa):
 			com.evento = eventobj
 			com.save()
 			return redirect('/ambiente/'+pk+'/tarefa/'+pktarefa+'/#post')
-	return render(request, 'tarefa.html', {'ambiente':ambiente, 'tarefa':eventobj, 'coments':comentarios, 'form':form})
+	return render(request, 'tarefa.html', {'ambiente':ambiente, 'tarefa':eventobj, 'coments':comentarios, 'form':form, 'regras':eventobj.action_rules(request.user), 'multa':eventobj.multa_corrente()})
