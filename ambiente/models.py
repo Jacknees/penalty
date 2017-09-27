@@ -81,7 +81,7 @@ class Evento(models.Model):
 		if self.dia_evento > date.today():
 			return False # Se a data do evento for futura não mostre botões
 		elif self.solicitacao_de_validacao: # Se o responsável tiver solicitado...
-			if self.momento_da_solicitacao.replace(day=self.momento_da_solicitacao + 2) < timezone.now():
+			if self.momento_da_solicitacao.replace(day=self.momento_da_solicitacao.day + 2) > timezone.now():
 				return 1 # Se houve solicitação, os outros usuários tem 2 dias a mais para refutar que o responsável não cumpriu com o dever
 			return 2 # Passou os dois dias, tarefa validada 
 		else: # Se o responsável não tiver solicitado...
@@ -97,6 +97,17 @@ class Evento(models.Model):
 			return self.valor_multa * (date(self.momento_da_solicitacao.year, self.momento_da_solicitacao.month, self.momento_da_solicitacao.day) - self.dia_evento).days
 		else:
 			return self.valor_multa * (date.today() - self.dia_evento).days
+
+	def validar_tarefa(self):
+		self.solicitacao_de_validacao = True
+		self.momento_da_solicitacao = timezone.now()
+		self.save()
+
+	def refutar_tarefa(self):
+		self.solicitacao_de_validacao = False
+		self.momento_da_solicitacao = None
+		self.save()
+
 
 class ComentariosDeEventos(models.Model):
 	usuario = models.ForeignKey(User, default=1)

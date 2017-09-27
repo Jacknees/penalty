@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect, get_object_or_404, HttpResponse, get_list_or_404
+from django.shortcuts import render, redirect, get_object_or_404, HttpResponse, get_list_or_404, Http404
 from datetime import date
 from .forms import AmbienteForm, EventoForm, EditEventoForm, Comentarios
 from .models import Ambiente, User, Evento, ComentariosDeEventos
@@ -157,3 +157,19 @@ def tarefa(request, pk, pktarefa):
 			com.save()
 			return redirect('/ambiente/'+pk+'/tarefa/'+pktarefa+'/#post')
 	return render(request, 'tarefa.html', {'ambiente':ambiente, 'tarefa':eventobj, 'coments':comentarios, 'form':form, 'regras':eventobj.action_rules(request.user), 'multa':eventobj.multa_corrente()})
+
+def solicitacao_validacao(request, pkambiente, pktarefa):
+	ambiente = get_object_or_404(Ambiente, pk=pkambiente)
+	get_object_or_404(ambiente.participantes, pk=request.user.pk)
+	tarefa = get_object_or_404(Evento, pk=pktarefa)
+	if tarefa.responsavel == request.user:
+		tarefa.validar_tarefa()
+		return redirect('/ambiente/'+pkambiente+'/tarefa/'+pktarefa+'/')
+	raise Http404
+
+def refutacao_validacao(request, pkambiente, pktarefa):
+	ambiente = get_object_or_404(Ambiente, pk=pkambiente)
+	get_object_or_404(ambiente.participantes, pk=request.user.pk)
+	tarefa = get_object_or_404(Evento, pk=pktarefa)
+	tarefa.refutar_tarefa()
+	return redirect('/ambiente/'+pkambiente+'/tarefa/'+pktarefa+'/')

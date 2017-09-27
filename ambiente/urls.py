@@ -18,4 +18,6 @@ urlpatterns = [
     url(r'^(?P<pk>[0-9]+)/eventos/(?P<pkevento>[0-9]+)/$', views.evento, name='evento'),
 
     url(r'^(?P<pk>[0-9]+)/tarefa/(?P<pktarefa>[0-9]+)/$', views.tarefa, name='tarefa'),
+    url(r'^(?P<pkambiente>[0-9]+)/tarefa/(?P<pktarefa>[0-9]+)/validar$', views.solicitacao_validacao, name='solicitacao_validacao'),
+    url(r'^(?P<pkambiente>[0-9]+)/tarefa/(?P<pktarefa>[0-9]+)/refutar$', views.refutacao_validacao, name='refutacao_validacao'),
 ]
