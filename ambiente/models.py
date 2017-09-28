@@ -77,7 +77,7 @@ class Evento(models.Model):
 				evento.dia_evento = data
 				evento.save()
 
-	def action_rules(self, user_logged):
+	def action_rules(self):
 		if self.dia_evento > date.today():
 			return False # Se a data do evento for futura não mostre botões
 		elif self.solicitacao_de_validacao: # Se o responsável tiver solicitado...
