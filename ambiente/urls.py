@@ -10,6 +10,7 @@ urlpatterns = [
     url(r'^(?P<pk>[0-9]+)/$', views.detalhe_ambiente, name='ambiente'),
 
     url(r'^(?P<pkambiente>[0-9]+)/proximos/$', views.proximos_eventos, name='proximos_eventos'),
+    url(r'^(?P<pkambiente>[0-9]+)/proximos/(?P<username>[\w.@+-]+)/$', views.proximos_eventos_por_participante, name='proximos_eventos_por_participante'),
 
     url(r'^(?P<pk>[0-9]+)/participantes/$', views.participantes, name='participantes'),
     url(r'^add_user/$', views.add_user, name='add_user'),

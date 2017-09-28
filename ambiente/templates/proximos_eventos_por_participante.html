@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 {% load aux_tags %}
-{% block titulo %}Penalty - {{ ambiente.nome }} - Próximos Eventos {% endblock titulo %}
+{% block titulo %}Penalty - {{ ambiente.nome }} - Próximos Eventos ({{ participante.first_name }}) {% endblock titulo %}
 
 {% block conteudo %}
 <div class="container-fluid">
@@ -27,20 +27,15 @@
 		<ol class="breadcrumb">
 		  <li><a href="#">Home</a></li>
 		  <li><a href="{% url 'ambiente:ambiente' ambiente.pk %}">{{ ambiente.nome }}</a></li>
-		  <li class="active">Próximos eventos</li>
+		  <li><a href="{% url 'ambiente:proximos_eventos' ambiente.pk %}">Próximos eventos</a></li>
+		  <li class="active">Filtrado para {{ participante.first_name }}</li>
 		</ol>
-		<h3>{{ ambiente.nome }} - Próximos eventos:</h3>
+		<h3>{{ ambiente.nome }} - Próximos eventos de {{ participante.first_name }}:</h3>
 		<hr>
 		<div class="panel panel-default">
 		  <div class="panel-body">
-		  <p>Aqui estão os eventos futuros deste ambiente - <a href="{% url 'ambiente:eventos' ambiente.pk %}">Gerenciar eventos</a></p>
+		  <p>Aqui estão os eventos futuros deste ambiente para {{ participante.first_name }} - <a href="{% url 'ambiente:eventos' ambiente.pk %}">Gerenciar eventos</a> - <a href="{% url 'ambiente:proximos_eventos' ambiente.pk %}">Todos os eventos</a></p>
 		  <hr>
-		  <p>Filtrar eventos por participante:  
-		  	{% for participante in participantes %}
-		  		<a href="{% url 'ambiente:proximos_eventos_por_participante' ambiente.pk participante.username %}">{{ participante.first_name }} ({{ participante.email }})</a>{% if participante != participantes.last %},
-		  	{% else %}.
-		  	{% endif %}
-		  	{% endfor %}
 		  <div class="row">
 		  	
 		  
@@ -69,6 +64,7 @@
 		  	<div class="container">
 		  		<p>Não há nenhuma tarefa futura neste ambiente.</p>
 		  	</div>
+		  	
 		  {% endfor %}
 		  
 		  </div>
