@@ -11,7 +11,7 @@
 		        <ul class="nav">
 		            <li><a href="{% url 'ambiente:ambiente' ambiente.pk %}">Geral</a></li>
 		            <li class="nav-divider"></li>
-		            <li><a href="javascript:;">Próximos eventos</a></li>
+		            <li><a href="{% url 'ambiente:proximos_eventos' ambiente.pk %}">Próximos eventos</a></li>
 		            <li><a href="javascript:;">Eventos passados</a></li>
 		            <li><a href="javascript:;">Multas</a></li>
 		            <li class="nav-divider"></li>
@@ -60,7 +60,7 @@
 			  			<p>Você já solicitou a validação desta tarefa em <b>{{ tarefa.momento_da_solicitacao }}</b>.</p>
 				  		<ul>
 				  			{% if multa > 0 %}
-				  				<li style="color: red;">Multa estancada em R$ {{ multa }};</li>
+				  				<li style="color: red;">Houve multa de R$ {{ multa }} nesta tarefa;</li>
 				  			{% endif %}
 				  			<li>Solicitação em processo de validação;</li>
 				  			<li>Caso algum dos outros participantes ache que você esteja mentindo, eles poderão lhe refutar em dois dias após a sua solicitação.</li>
@@ -69,7 +69,7 @@
 			  			<p>Você solicitou a validação desta tarefa em {{ tarefa.momento_da_solicitacao }}</p>
 				  		<ul>
 				  			{% if multa > 0 %}
-				  				<li style="color: red;">Multa estancada em R$ {{ multa }};</li>
+				  				<li style="color: red;">Houve multa de R$ {{ multa }} nesta tarefa;</li>
 				  			{% endif %}
 				  			<li>Sua tarefa foi validada com sucesso!</li>
 				  		</ul>
@@ -139,7 +139,7 @@
 			  			</span></p>
 				  		<ul>
 				  			{% if multa > 0 %}
-				  				<li style="color: red;">Multa estancada em R$ {{ multa }};</li>
+				  				<li style="color: red;">Houve multa de R$ {{ multa }} nesta tarefa;</li>
 				  			{% endif %}
 				  			<li>Solicitação em processo de validação;</li>
 				  			<li>Caso ele não tenha cumprido com seu afazer, <b>refute-o</b>.</li>
@@ -148,7 +148,7 @@
 			  			<p>{{ tarefa.responsavel.first_name }} solicitou a validação desta tarefa em <b>{{ tarefa.momento_da_solicitacao }}</b>.</p>
 				  		<ul>
 				  			{% if multa > 0 %}
-				  				<li style="color: red;">Multa estancada em R$ {{ multa }};</li>
+				  				<li style="color: red;">Houve multa de R$ {{ multa }} nesta tarefa;</li>
 				  			{% endif %}
 				  			<li>A tarefa foi validada com sucesso!</li>
 				  		</ul>

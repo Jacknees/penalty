@@ -173,3 +173,23 @@ def refutacao_validacao(request, pkambiente, pktarefa):
 	tarefa = get_object_or_404(Evento, pk=pktarefa)
 	tarefa.refutar_tarefa()
 	return redirect('/ambiente/'+pkambiente+'/tarefa/'+pktarefa+'/')
+
+def proximos_eventos(request, pkambiente):
+	ambiente = get_object_or_404(Ambiente, pk=pkambiente)
+	get_object_or_404(ambiente.participantes, pk=request.user.pk)
+	tarefas = Evento.objects.filter(ambiente=ambiente).filter(dia_evento__gt=date.today()).order_by('dia_evento')
+	paginator = Paginator(tarefas, 14) # Mostra 15 contatos por página
+
+    # Make sure page request is an int. If not, deliver first page.
+    # Esteja certo de que o `page request` é um inteiro. Se não, mostre a primeira página.
+	try:
+		page = int(request.GET.get('page', '1'))
+	except ValueError:
+		page = 1
+
+	# Se o page request (9999) está fora da lista, mostre a última página.
+	try:
+		lista = paginator.page(page)
+	except (EmptyPage, InvalidPage):
+		lista = paginator.page(paginator.num_pages)
+	return render(request, 'proximos_eventos.html', {'ambiente':ambiente, 'eventos':lista})

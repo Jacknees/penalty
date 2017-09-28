@@ -10,7 +10,7 @@
 		    	<ul class="nav">
 		            <li><a href="{% url 'ambiente:ambiente' ambiente.pk %}">Geral</a></li>
 		            <li class="nav-divider"></li>
-		            <li><a href="javascript:;">Próximos eventos</a></li>
+		            <li><a href="{% url 'ambiente:proximos_eventos' ambiente.pk %}">Próximos eventos</a></li>
 		            <li><a href="javascript:;">Eventos passados</a></li>
 		            <li><a href="javascript:;">Multas</a></li>
 		            <li class="nav-divider"></li>
