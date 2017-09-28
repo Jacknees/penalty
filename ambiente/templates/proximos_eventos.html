@@ -11,8 +11,8 @@
 		            <li><a href="{% url 'ambiente:ambiente' ambiente.pk %}">Geral</a></li>
 		            <li class="nav-divider"></li>
 		            <li class="active"><a href="{% url 'ambiente:proximos_eventos' ambiente.pk %}">Próximos eventos</a></li>
-		            <li><a href="javascript:;">Eventos passados</a></li>
-		            <li><a href="javascript:;">Multas</a></li>
+		            <li><a href="{% url 'ambiente:eventos_passados' ambiente.pk %}">Eventos passados</a></li>
+		            <li><a href="{% url 'ambiente:eventos_multados' ambiente.pk %}">Multas</a></li>
 		            <li class="nav-divider"></li>
 		            <li><a href="{% url 'ambiente:eventos' ambiente.pk %}">Gerenciar eventos</a></li>
 		            <li><a href="{% url 'ambiente:participantes' ambiente.pk %}">Gerenciar participantes</a></li>
@@ -42,10 +42,8 @@
 		  	{% endif %}
 		  	{% endfor %}
 		  <div class="row">
-		  	
-		  
-		  {% for evento in eventos %}
-		  <div class="col-sm-6">
+		  	{% for evento in eventos %}
+		  <div class="col-xs-12 col-sm-12 col-md-12 col-lg-6">
 		  	<div class="panel panel-default">
 		  	  {% if evento.intervalo == "D" %}
 		  	  	<div class="panel-body dias">
@@ -55,12 +53,24 @@
 		  	    <div class="panel-body meses">
 		  	  {% endif %}
 			    <h4><a href="{% url 'ambiente:tarefa' ambiente.pk evento.pk %}" class="titulopindex">{{ evento.nome }}</a><span class="pCinza"> - {{ evento.dia_evento }}</span></h4>
-			    <small class="pCinzaUser">
-			    	{{ evento.descricao }}<br>
-			    	Tarefa de {{ evento.responsavel.first_name }}<br>
-			    	Se repete de {{ evento.quantidade_intervalos_repeticao }} em {{ evento.quantidade_intervalos_repeticao }} {{ evento.intervalo|typedata }}<br>
-			    	Valor multa: R$ {{ evento.valor_multa }}<br>
+			    <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+			    	<small class="pCinzaUser">
+				    	{{ evento.descricao }}<br>
+				    	Tarefa de {{ evento.responsavel.first_name }}<br>
+				    	Se repete de {{ evento.quantidade_intervalos_repeticao }} em {{ evento.quantidade_intervalos_repeticao }} {{ evento.intervalo|typedata }}<br>
+				    	Valor multa: R$ {{ evento.valor_multa }}<br>
+			    	</small>
+			    </div>
+			    <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+			    	<small class="pCinzaUser">			    	
+			    	{% if evento|coment %}
+			    		<ul>
+			    			<li><a href="{% url 'ambiente:tarefa' ambiente.pk evento.pk %}">{{ evento|coment }} comentario(s) nesta tarefa.</a></li>
+			    		</ul>
+			    	{% endif %}
 			    </small>
+			    </div>
+			    
 			  </div>
 			</div>
 		  </div>
@@ -70,7 +80,6 @@
 		  		<p>Não há nenhuma tarefa futura neste ambiente.</p>
 		  	</div>
 		  {% endfor %}
-		  
 		  </div>
 		  <div class="col-sm-6 col-sm-offset-3">
 		  <nav aria-label="Page navigation">

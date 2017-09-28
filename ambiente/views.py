@@ -260,14 +260,11 @@ def eventos_multados(request, pkambiente):
 	tarefas = Evento.objects.filter(ambiente=ambiente).filter(dia_evento__lt=date.today()).filter(solicitacao_de_validacao=False).order_by('dia_evento')[::-1]
 	paginator = Paginator(tarefas, 14) # Mostra 15 contatos por página
 
-    # Make sure page request is an int. If not, deliver first page.
-    # Esteja certo de que o `page request` é um inteiro. Se não, mostre a primeira página.
 	try:
 		page = int(request.GET.get('page', '1'))
 	except ValueError:
 		page = 1
 
-	# Se o page request (9999) está fora da lista, mostre a última página.
 	try:
 		lista = paginator.page(page)
 	except (EmptyPage, InvalidPage):

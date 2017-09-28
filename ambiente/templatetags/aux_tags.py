@@ -3,6 +3,7 @@ from ..models import Ambiente, User
 # from django.core.exceptions import ObjectDoesNotExist
 from django.utils import timezone
 from datetime import date
+from ambiente.models import ComentariosDeEventos
 
 register = template.Library()
 
@@ -26,3 +27,7 @@ def verdata(value):
 		return 1
 	else:
 		return 2
+
+@register.filter(name='coment')
+def coment(value):
+	return len(ComentariosDeEventos.objects.filter(evento=value))

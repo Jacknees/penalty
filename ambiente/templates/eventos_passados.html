@@ -11,8 +11,8 @@
 		            <li><a href="{% url 'ambiente:ambiente' ambiente.pk %}">Geral</a></li>
 		            <li class="nav-divider"></li>
 		            <li><a href="{% url 'ambiente:proximos_eventos' ambiente.pk %}">Próximos eventos</a></li>
-		            <li class="active"><a href="javascript:;">Eventos passados</a></li>
-		            <li><a href="javascript:;">Multas</a></li>
+		            <li class="active"><a href="{% url 'ambiente:eventos_passados' ambiente.pk %}">Eventos passados</a></li>
+		            <li><a href="{% url 'ambiente:eventos_multados' ambiente.pk %}">Multas</a></li>
 		            <li class="nav-divider"></li>
 		            <li><a href="{% url 'ambiente:eventos' ambiente.pk %}">Gerenciar eventos</a></li>
 		            <li><a href="{% url 'ambiente:participantes' ambiente.pk %}">Gerenciar participantes</a></li>
@@ -65,7 +65,6 @@
 			    </div>
 			    <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
 			    	<small class="pCinzaUser">
-			    	<h5>Status da Tarefa:</h5>
 			    	<ul>
 			    		{% if evento.action_rules == 1 %}
 			    			<li style="color: #008B45;">Em validação...</li>
@@ -85,6 +84,9 @@
 			    				<li style="color: #FF6347;">Multa corrente: R$ {{ evento.multa_corrente }}</li>	    				
 		    				{% endif %}
 			    		{% endif %}
+			    		{% if evento|coment %}
+			    			<li><a href="{% url 'ambiente:tarefa' ambiente.pk evento.pk %}">{{ evento|coment }} comentario(s) nesta tarefa.</a></li>
+				    	{% endif %}
 			    	</ul>
 			    </small>
 			    </div>
