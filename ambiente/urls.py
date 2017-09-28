@@ -15,6 +15,9 @@ urlpatterns = [
     url(r'^(?P<pkambiente>[0-9]+)/passados/$', views.eventos_passados, name='eventos_passados'),
     url(r'^(?P<pkambiente>[0-9]+)/passados/(?P<username>[\w.@+-]+)/$', views.eventos_passados_por_participante, name='eventos_passados_por_participante'),
 
+    url(r'^(?P<pkambiente>[0-9]+)/multas/$', views.eventos_multados, name='eventos_multados'),
+    # url(r'^(?P<pkambiente>[0-9]+)/passados/(?P<username>[\w.@+-]+)/$', views.eventos_passados_por_participante, name='eventos_passados_por_participante'),
+
     url(r'^(?P<pk>[0-9]+)/participantes/$', views.participantes, name='participantes'),
     url(r'^add_user/$', views.add_user, name='add_user'),
     url(r'^remove_user/$', views.remove_user, name='remove_user'),

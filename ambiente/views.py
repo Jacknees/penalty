@@ -253,3 +253,23 @@ def eventos_passados_por_participante(request, pkambiente, username):
 	except (EmptyPage, InvalidPage):
 		lista = paginator.page(paginator.num_pages)
 	return render(request, 'eventos_passados_por_participante.html', {'ambiente':ambiente, 'eventos':lista, 'participante':get_object_or_404(User, username=username)})
+
+def eventos_multados(request, pkambiente):
+	ambiente = get_object_or_404(Ambiente, pk=pkambiente)
+	get_object_or_404(ambiente.participantes, pk=request.user.pk)
+	tarefas = Evento.objects.filter(ambiente=ambiente).filter(dia_evento__lt=date.today()).filter(solicitacao_de_validacao=False).order_by('dia_evento')[::-1]
+	paginator = Paginator(tarefas, 14) # Mostra 15 contatos por página
+
+    # Make sure page request is an int. If not, deliver first page.
+    # Esteja certo de que o `page request` é um inteiro. Se não, mostre a primeira página.
+	try:
+		page = int(request.GET.get('page', '1'))
+	except ValueError:
+		page = 1
+
+	# Se o page request (9999) está fora da lista, mostre a última página.
+	try:
+		lista = paginator.page(page)
+	except (EmptyPage, InvalidPage):
+		lista = paginator.page(paginator.num_pages)
+	return render(request, 'eventos_multados.html', {'ambiente':ambiente, 'eventos':lista, 'participantes':User.objects.all()})
