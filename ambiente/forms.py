@@ -37,9 +37,14 @@ class EventoForm(forms.ModelForm):
 
 	def clean(self):
 		cd = self.cleaned_data
-		if cd.get('data_fim') < cd.get('data_inicio'):
+		if cd.get('data_fim') < cd.get('data_inicio') or cd.get('data_fim') == cd.get('data_inicio'):
 			raise forms.ValidationError(self.fields['data_fim'].error_messages['invalid'])
-			#self.add_error('Erro nas datas', "A data final deve ser maior que a inicial")
+		elif cd.get('data_inicio') < date.today():
+			raise forms.ValidationError(self.fields['data_fim'].error_messages['invalid'])
+		if cd.get('intervalo') == 'M':
+			data = cd.get('data_fim') - cd.get('data_inicio')
+			if int(data.days/30) < 1:
+				raise forms.ValidationError(self.fields['data_fim'].error_messages['invalid'])
 		return cd
 
 

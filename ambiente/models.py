@@ -54,7 +54,7 @@ class Evento(models.Model):
 
 		if self.intervalo == 'D':
 			delta = self.data_fim - self.data_inicio
-			for i in range(0, delta.days, self.quantidade_intervalos_repeticao):
+			for i in range(0, delta.days+1, self.quantidade_intervalos_repeticao):
 				evento = copy(self)
 				data = self.data_inicio.toordinal() + i
 				evento.dia_evento = date.fromordinal(data)

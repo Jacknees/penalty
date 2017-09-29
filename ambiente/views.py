@@ -24,7 +24,18 @@ def detalhe_ambiente(request, pk):
 	ambiente = get_object_or_404(Ambiente, pk=pk)
 	get_object_or_404(ambiente.participantes, pk=request.user.pk)
 	participantes = ambiente.participantes.values()
-	return render(request, 'detalhe_ambiente.html', {'ambiente':ambiente, 'participantes':participantes})
+	tarefas_hj = Evento.objects.filter(ambiente=ambiente).filter(dia_evento=date.today()).order_by('dia_evento')
+	tarefas_proximas = Evento.objects.filter(ambiente=ambiente).filter(dia_evento__gt=date.today()).order_by('dia_evento')[0:11]
+	resto_tarefas = False
+	if len(tarefas_hj) > 2:
+		resto_tarefas = len(tarefas_hj) - 2
+
+	return render(request, 'detalhe_ambiente.html', {'ambiente':ambiente,
+													'participantes':participantes,
+													'tarefas_hj':tarefas_hj[0:2],
+													'tarefas_hj_total':tarefas_hj,
+													'resto_tarefas':resto_tarefas,
+													'tarefas_proximas':tarefas_proximas})
 
 def participantes(request, pk):
 	ambiente = get_object_or_404(Ambiente, pk=pk)
