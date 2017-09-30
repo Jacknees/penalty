@@ -53,15 +53,13 @@
 			    	{% else %}
 			    		<p style="color: #FF6347;">Não concluída</p>
 			    	{% endif %}
-			    	</small>
+			      </small>
 
 				  </div>
 				</div>
 			  </div>
 			{% empty %}
-		  		<div class="container">
-			  		<p>Não há tarefas para hoje! :)</p>
-			  	</div>
+	  			<p>Não há tarefas para hoje! :)</p>
 		  	{% endfor %}
 		  	{% if resto_tarefas %}
 		  		<div class="col-xs-12 col-sm-12 col-md-12 col-lg-4">
@@ -124,16 +122,9 @@
 		  <div class="panel-body">
 		  	<p>Multas em aberto</p>
 		  	<hr>
-		  </div>
-		</div>
-	</div>
-	<div class="col-sm-4">
-		<div class="panel panel-default">
-		  <div class="panel-body">
-		  	<p>Próximos eventos</p>
-		  	<hr>
-		  	{% for evento in tarefas_proximas %}
-			  <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+		  	{% for evento in multas %}	  		
+		  	
+		  	<div class="col-xs-12 col-sm-12 col-md-12 col-lg-4">
 			  	<div class="panel panel-default">
 			  	  {% if evento.intervalo == "D" %}
 			  	  	<div class="panel-body dias">
@@ -142,34 +133,93 @@
 			  	  {% else %}
 			  	    <div class="panel-body meses">
 			  	  {% endif %}
-			  	  	<small class="pCinzaUser">
-				    	<a href="{% url 'ambiente:tarefa' ambiente.pk evento.pk %}" class="titulopindex">{{ evento.nome }}</a><span class="pCinza"> - {{ evento.dia_evento }}</span>
-					</small>
-				    <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
-				    	<small class="pCinzaUser">
-					    	{{ evento.responsavel.first_name }}<br>
-					    	Valor multa: R$ {{ evento.valor_multa }}<br>
-				    	</small>
-				    </div>
-				    <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
-				    	<small class="pCinzaUser">			    	
-				    	{% if evento|coment %}
-				    		<ul>
-				    			<li><a href="{% url 'ambiente:tarefa' ambiente.pk evento.pk %}">{{ evento|coment }} comentario(s).</a></li>
-				    		</ul>
-				    	{% endif %}
-				    </small>
-				    </div>
-				    
+			  	  <small class="pCinzaUser">
+				    <a href="{% url 'ambiente:tarefa' ambiente.pk evento.pk %}" class="titulopindex">{{ evento.nome|truncatechars:16 }}</a><span class="pCinza"></span>
+				    <br>
+			    	{{ evento.responsavel.first_name|truncatechars:16 }}<br>
+			    	R$ {{ evento.valor_multa }}<br>
+			    	{% if evento.solicitacao_de_validacao %}
+			    		<p style="color: #008B45;">Concluído</p>
+			    	{% else %}
+			    		<p style="color: #FF6347;">Não concluída</p>
+			    	{% endif %}
+			      </small>
+
 				  </div>
 				</div>
 			  </div>
+			{% empty %}
+	  			<p>Não há multas nesse ambiente! :)</p>
+		  	{% endfor %}
+		  	{% if resto_multas %}
+	  		<div class="col-xs-12 col-sm-12 col-md-12 col-lg-4">
+			  	<div class="panel panel-default">
+			  	  <div class="panel-body">
 
-		  {% empty %}
-		  	<div class="container">
-		  		<p>Não há nenhuma tarefa futura neste ambiente.</p>
-		  	</div>
-		  {% endfor %}
+			  	  	<a href="{% url 'ambiente:eventos_multados' ambiente.pk %}"><h4 style="text-align: center;">+{{ resto_multas }} Multa(s)</h4></a>
+				  </div>
+				</div>
+			  </div>
+		  	{% endif %}
+		  </div>
+		</div>
+	</div>
+	<div class="col-sm-4">
+		<div class="panel panel-default">
+		  <div class="panel-body">
+		  	<p>Próximos eventos</p>
+		  	<hr>
+		  	<div class="nano">
+				<div class="nano-content">
+				  	{% for evento in tarefas_proximas %}
+					  <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+					  	<div class="panel panel-default">
+					  	  {% if evento.intervalo == "D" %}
+					  	  	<div class="panel-body dias">
+					  	  {% elif evento.intervalo == "S" %}
+					  	  	<div class="panel-body semanas">
+					  	  {% else %}
+					  	    <div class="panel-body meses">
+					  	  {% endif %}
+					  	  	<small class="pCinzaUser">
+						    	<a href="{% url 'ambiente:tarefa' ambiente.pk evento.pk %}" class="titulopindex">{{ evento.nome }}</a><span class="pCinza"> - {{ evento.dia_evento }}</span>
+							</small>
+						    <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+						    	<small class="pCinzaUser">
+							    	{{ evento.responsavel.first_name }}<br>
+							    	Valor multa: R$ {{ evento.valor_multa }}<br>
+						    	</small>
+						    </div>
+						    <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+						    	<small class="pCinzaUser">			    	
+						    	{% if evento|coment %}
+						    		<ul>
+						    			<li><a href="{% url 'ambiente:tarefa' ambiente.pk evento.pk %}">{{ evento|coment }} comentario(s).</a></li>
+						    		</ul>
+						    	{% endif %}
+						    </small>
+						    </div>
+						    
+						  </div>
+						</div>
+					  </div>
+
+				  {% empty %}
+				  	<div class="container">
+				  		<p>Não há nenhuma tarefa futura neste ambiente.</p>
+				  	</div>
+				  {% endfor %}
+				  {% if tarefas_proximas %}
+				  	<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+			  		<div class="panel panel-default">
+				  	  <div class="panel-body">
+				  	  	<a href="{% url 'ambiente:proximos_eventos' ambiente.pk %}"><h4 style="text-align: center;">Ver todos</h4></a>
+					  </div>
+					</div>
+				  </div>
+				  {% endif %}
+				</div>
+			</div>
 		  </div>
 		</div>
 	</div>	

@@ -30,12 +30,19 @@ def detalhe_ambiente(request, pk):
 	if len(tarefas_hj) > 2:
 		resto_tarefas = len(tarefas_hj) - 2
 
+	multas = Evento.objects.filter(ambiente=ambiente).filter(dia_evento__lt=date.today()).filter(solicitacao_de_validacao=False).order_by('dia_evento')[::-1]
+	resto_multas = False
+	if len(multas) > 5:
+		resto_multas = len(multas) - 5
+
 	return render(request, 'detalhe_ambiente.html', {'ambiente':ambiente,
 													'participantes':participantes,
 													'tarefas_hj':tarefas_hj[0:2],
 													'tarefas_hj_total':tarefas_hj,
 													'resto_tarefas':resto_tarefas,
-													'tarefas_proximas':tarefas_proximas})
+													'tarefas_proximas':tarefas_proximas,
+													'multas':multas[0:5],
+													'resto_multas':resto_multas})
 
 def participantes(request, pk):
 	ambiente = get_object_or_404(Ambiente, pk=pk)
