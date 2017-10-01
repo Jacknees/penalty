@@ -174,6 +174,35 @@ function delete_event(idHouse, idEvent) {
     return false;
 }
 
+function excluiConta() {
+  //console.log("função para saber se existe uma relaçao de seguidor");
+  var senha = $("#recipientsenha").val()
+  $.ajax({
+        url : "/excluiUser/", // the endpoint
+        type : "POST", // http method
+        data : { 
+          id : senha,
+           }, // data sent with the post request
+             
+        // handle a successful response
+        success : function(json) {
+            if (json == false){
+              alert("Erro ao excluir conta");
+            }
+            else{
+              window.location.replace("/");
+            }
+        },
+
+        // handle a non-successful response
+        error : function(xhr,errmsg,err) {
+          console.log(xhr.status + ": " + xhr.responseText);
+           alert("deu errado");
+
+        }
+    });
+}
+
 
 function getCookie(name) {
     var cookieValue = null;

@@ -44,3 +44,59 @@ def register(request):
 def make_logout(request):	
 	logout(request)
 	return redirect("/")
+
+def settings(request):
+	if not request.user.is_authenticated():
+		raise Http404
+	else:
+		#detalhes = get_object_or_404(Profile, user=request.user)
+		#form = UserFormRegister(request.POST or None, instance=request.user)
+		if request.POST:
+			print('entrou na funçao')
+
+			name = request.POST.get('first_name')
+			#lastname = request.POST.get('last_name')
+			#username = request.POST.get('username')
+			email = request.POST.get('email')
+			password = request.POST.get('password')
+			repassword = request.POST.get('repassword')
+			oldpassword = request.POST.get('oldpassword')
+			print(name)
+			#print(lastname)
+			print(password)
+			print(email)
+			print(repassword)
+			print(oldpassword)
+
+			if name == '' or email == '' or password == '' or repassword == '' or oldpassword == '':
+				return render(request, 'settings.html', {'error_name':'* Este campo é obrigatório.'})
+
+			if request.user.check_password(oldpassword) == False:
+				print('senha incorreta')
+				return render(request, 'settings.html', {'error_de_senha': 'Senha atual está incorreta'})
+
+			if password != repassword:
+				return render(request, 'settings.html', {'error_de_reg': 'Senhas não conferem'})
+
+			request.user.first_name = name
+			request.user.email = email
+			request.user.set_password(password)
+			request.user.save()
+			user = authenticate(username=request.user.username, password=password)
+			login(request, user)
+			#email_alteracao.delay(request.user.first_name, request.user.last_name, request.user.username, request.user.email)
+			return render(request, 'settings.html', {'success':'Alteração feita com sucesso!'})
+		return render(request, 'settings.html')
+
+def excluiUser(request):
+	if not request.user.is_authenticated():
+		raise Http404
+	else:
+		if request.method == 'POST':
+			idvi = request.POST.get('id')
+			resultado = False
+			if request.user.check_password(idvi) == True:
+				request.user.delete()
+				resultado = True
+			return HttpResponse(json.dumps(resultado), content_type="application/json")
+		return HttpResponse(json.dumps(False), content_type="application/json")
