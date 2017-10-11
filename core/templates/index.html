@@ -3,5 +3,35 @@
 {% block titulo %}Penalty - Página Inicial{% endblock titulo %}
 
 {% block conteudo %}
+
+<div class="container">
+	<h3>Olá, {{ request.user.first_name }}!</h3>
+	<hr>
+	<div class="col-sm-4">
+  	  <div class="panel panel-default">
+  	  	<div class="panel-body">
+  	  		<h4>Suas tarefas hoje:</h4>
+  	  		<hr>
+  	  		<h4>Próximas tarefas</h4>
+  	  		<hr>
+	    </div>
+	  </div>
+    </div>
+    <div class="col-sm-4">
+  	  <div class="panel panel-default">
+  	  	<div class="panel-body">
+	    </div>
+	  </div>
+    </div>
+    <div class="col-sm-4">
+  	  <div class="panel panel-default">
+  	  	<div class="panel-body">
+	    </div>
+	  </div>
+    </div>
+
+</div>
+
+
 	
 {% endblock conteudo %}
