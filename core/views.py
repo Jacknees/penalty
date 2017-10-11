@@ -2,11 +2,13 @@ from django.shortcuts import render, HttpResponse, Http404, redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import login, logout, authenticate
 from .models import User
+from ambiente.models import Ambiente
 import json
 
 @login_required(login_url='/login')
 def index(request):	
-	return render(request, 'index.html')
+	meus_ambientes = Ambiente.objects.filter(participantes=request.user)
+	return render(request, 'index.html', {'meus_ambientes': meus_ambientes})
 
 def login_page(request):
 	if request.user.is_authenticated(): return index(request)

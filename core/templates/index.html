@@ -20,12 +20,32 @@
     <div class="col-sm-4">
   	  <div class="panel panel-default">
   	  	<div class="panel-body">
+  	  		<h4>Retrospecto:</h4>
+  	  		<hr>
 	    </div>
 	  </div>
     </div>
     <div class="col-sm-4">
   	  <div class="panel panel-default">
   	  	<div class="panel-body">
+  	  		<h4>Ambientes:</h4>
+  	  		<hr>
+  	  		{% for amb in meus_ambientes %}
+  			<div class="panel panel-default">
+  				<div class="panel-body">
+  					<p class="pCinzaUser">
+				    	<a href="{% url 'ambiente:ambiente' amb.pk %}" class="titulopindex">{{ amb.nome }}</a><span class="pCinza"></span>
+					</p>
+					<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+				    	<small class="pCinzaUser">
+				    		Criado em {{ amb.data_criacao }}
+				    	</small>
+				    </div>
+  				</div>
+  			</div>
+  	  		{% empty %}
+  	  			
+  	  		{% endfor %}
 	    </div>
 	  </div>
     </div>
